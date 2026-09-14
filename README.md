@@ -51,6 +51,8 @@ to see how the same workflow is applied to different data.
 When you take ownership of the project,
 adapt the processing pipelines to generate new analytics.
 
+The file was adjusted to run and search for Social support instead of ladder score. The text file then prints the summary statistics for this. 
+
 ## Important Folders and Files
 
 - **data/raw/** - raw input data files

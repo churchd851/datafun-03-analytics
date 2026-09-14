@@ -31,7 +31,7 @@ INPUT FILE:  data/raw/astros.json
 INPUT FILE:  data/raw/Feedback.xlsx
 INPUT FILE:  data/raw/romeo_and_juliet.txt
 
-OUTPUT FILE: data/processed/csv_ladder_score_stats.txt
+OUTPUT FILE: data/processed/csv_logged_social_support	.txt
 OUTPUT FILE: data/processed/json_astronauts_by_craft.txt
 OUTPUT FILE: data/processed/xlsx_feedback_github_count.txt
 OUTPUT FILE: data/processed/txt_summary.txt
@@ -93,11 +93,11 @@ and write the statistics to a text file.
 """
 
 CSV_INPUT: Final[Path] = RAW_DIR / "2020_happiness.csv"
-CSV_OUTPUT: Final[Path] = PROCESSED_DIR / "csv_ladder_score_stats.txt"
-CSV_COLUMN: Final[str] = "Ladder score"  # CUSTOM
+CSV_OUTPUT: Final[Path] = PROCESSED_DIR / "csv_social_support.txt"
+CSV_COLUMN: Final[str] = "Social support"  # CUSTOM
 WHY_CSV_COLUMN: Final[str] = r"""
-The ladder score is the survey's overall happiness measure,
-so its distribution is the natural first summary of this dataset.
+The social support is how much support an individual recieves from the government,
+so its distribution is an importan statistics to analyze dataset.
 """
 
 # === JSON: COUNT RECORDS BY A CATEGORY ===
