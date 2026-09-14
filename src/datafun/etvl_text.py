@@ -25,6 +25,7 @@ RUN:
 # === DECLARE IMPORTS (BRING IN FREE CODE) ===
 
 import logging
+import re
 from pathlib import Path
 
 # === SKILL: READING A TEXT FILE LINE BY LINE ===
@@ -62,7 +63,7 @@ def extract_lines(*, file_path: Path) -> list[str]:
 # len() counts items in any sequence - lines, words, or characters.
 
 
-def transform_line_word_char_counts(*, lines: list[str]) -> dict[str, int]:
+def transform_line_word_char_counts(*, lines: list[str], word: str | None = None) -> dict[str, int]:
     """T: Summarize a list of lines: line count, word count, character count.
 
     Arguments:
@@ -79,14 +80,17 @@ def transform_line_word_char_counts(*, lines: list[str]) -> dict[str, int]:
         char_count += len(line)
         word_count += len(line.split())
 
-    return {
+    result = {
         "lines": line_count,
         "words": word_count,
         "chars": char_count,
     }
 
+    if word:
+        full_text = "\n".join(lines)
+        result[f"{word}_count"] = len(re.findall(rf'\b{re.escape(word)}\b', full_text, re.IGNORECASE))
 
-# === V: VERIFY ===
+    return result
 
 # Check all expected keys are present and all counts are non-negative.
 # Catching this before Load prevents writing a corrupt result to disk.
@@ -135,6 +139,9 @@ def load_summary_report(
         f.write(f"Lines: {summary['lines']}\n")
         f.write(f"Words: {summary['words']}\n")
         f.write(f"Characters: {summary['chars']}\n")
+        for key, value in summary.items():
+            if key not in ("lines", "words", "chars"):
+                f.write(f"{key}: {value}\n")
 
 
 # === CALL THIS PIPELINE FROM app.py ===
@@ -171,6 +178,7 @@ def run_etvl_text(
     input_file: Path,
     output_file: Path,
     log: logging.Logger,
+    word: str | None = None,
 ) -> None:
     """Run the full text ETVL pipeline.
 
@@ -192,6 +200,7 @@ def run_etvl_text(
     # T: Calculate counts.
     summary = transform_line_word_char_counts(
         lines=lines,
+        word=word,
     )
 
     # V: Verify results before writing.

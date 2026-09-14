@@ -143,15 +143,19 @@ so counting the word estimates how often that came up.
 TXT_PIPELINE_DESCRIPTION: Final[str] = r"""
 Read the Romeo and Juliet text file,
 count its lines, words, and characters,
+count how many times the word "Romeo" appears (case-insensitive),
 verify the results,
 and write the summary to a text file.
 """
 
 TXT_INPUT: Final[Path] = RAW_DIR / "romeo_and_juliet.txt"
 TXT_OUTPUT: Final[Path] = PROCESSED_DIR / "txt_summary.txt"
+TXT_WORD: Final[str] = "Romeo"
 WHY_TXT_SUMMARY: Final[str] = r"""
 Line, word, and character counts give a quick size profile
 of a plain-text document before any deeper reading.
+A word-frequency check on "Romeo" highlights how central
+a single character is to the text.
 """
 
 # === DEFINE THE MAIN FUNCTION ===
@@ -189,6 +193,8 @@ def main() -> None:
     Arguments: None.
     Returns: None.
     """
+
+    
     log_header(LOG, "P03")
 
     LOG.info("===================================")
@@ -254,6 +260,7 @@ def main() -> None:
     run_etvl_text(
         input_file=TXT_INPUT,
         output_file=TXT_OUTPUT,
+        word=TXT_WORD,
         log=LOG,
     )
 
